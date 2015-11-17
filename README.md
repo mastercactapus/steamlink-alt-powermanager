@@ -24,17 +24,12 @@ reboot -f
 
 ## Notes
 
-A simple quick-temporary fix; powers off after 15 mins if you are NOT playing a game (either in the steamlink interface, or steam library)
+A simple quick-temporary fix; disables suspend timer
 
 Registers `system.powermanager` alias with a single objectPath `/powermanager` and the following methods:
 
 `system.powermanager.Sleep` in turn just runs `poweroff -f` currently
-`system.powermanager.SetActivity(state uint32)` if set to 1, disable suspend, otherwise reset timer
-
-Emits the following signals:
-
-`system.powermanager.UpdateSuspendCountdown uint32` number of seconds before sleep, starts with 60 seconds remaining
-`system.powermanager.CancelSuspendCountdown` tells the shell to cancel the "are you still there" message
+`system.powermanager.SetActivity(state uint32)` does nothing
 
 ## Debugging
 

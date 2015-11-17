@@ -5,11 +5,7 @@ import (
 	"github.com/godbus/dbus/introspect"
 	log "github.com/sirupsen/logrus"
 	"os/exec"
-	"time"
 )
-
-const warnTimeout = 14 * time.Minute
-const sleepTimeout = 15 * time.Minute
 
 const intro = `
 <node>
@@ -33,50 +29,9 @@ type PowerManager struct {
 
 func NewPowerManager(conn *dbus.Conn) *PowerManager {
 	pm := &PowerManager{
-		activityCh: make(chan bool), //no buffer, method_return will only happen after it's actually processed
-		conn:       conn,
+		conn: conn,
 	}
-	go pm.loop()
 	return pm
-}
-
-func (pm *PowerManager) loop() {
-	t := time.NewTicker(time.Millisecond * 200)
-	act := false
-	hasWarned := false
-	lastAct := time.Now()
-	for {
-		select {
-		case setAct := <-pm.activityCh:
-			if hasWarned {
-				pm.conn.Emit("/powermanager", "system.powermanager.CancelSuspendCountdown")
-			}
-			hasWarned = false
-			act = setAct
-			lastAct = time.Now()
-		case <-t.C:
-			if act {
-				lastAct = time.Now()
-				break
-			}
-
-			elapsed := time.Since(lastAct)
-
-			if elapsed > warnTimeout {
-				hasWarned = true
-				seconds := (sleepTimeout - elapsed) / time.Second
-				if seconds < 0 {
-					seconds = 0
-				}
-				pm.conn.Emit("/powermanager", "system.powermanager.UpdateSuspendCountdown", uint32(seconds))
-			}
-
-			if elapsed > sleepTimeout {
-				pm.Sleep()
-			}
-
-		}
-	}
 }
 
 func (pm *PowerManager) Sleep() {
@@ -85,7 +40,7 @@ func (pm *PowerManager) Sleep() {
 }
 
 func (pm *PowerManager) SetActivity(state uint32) {
-	pm.activityCh <- state == 1
+	// do nothing
 }
 
 func main() {

@@ -19,7 +19,8 @@
 		},
 		"publish-github": {
 			"owner": "mastercactapus",
-			"repository": "steamlink-alt-powermanager"
+			"repository": "steamlink-alt-powermanager",
+			"include": "*.tar.gz"
 		}
 	},
 	"ConfigVersion": "0.9"

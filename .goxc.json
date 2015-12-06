@@ -1,7 +1,8 @@
 {
 	"AppName": "powermanager",
 	"Tasks": [
-		"default"
+		"default",
+		"publish-github"
 	],
 	"TasksExclude": [
 		"go-install",
@@ -13,6 +14,10 @@
 	"TaskSettings": {
 		"default": {
 			"GOARM": "7"
+		},
+		"publish-github": {
+			"owner": "mastercactapus",
+			"repository": "steamlink-alt-powermanager"
 		}
 	},
 	"ConfigVersion": "0.9"

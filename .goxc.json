@@ -6,7 +6,9 @@
 	],
 	"TasksExclude": [
 		"go-install",
-		"debs"
+		"debs",
+		"deb",
+		"deb-dev"
 	],
 	"Arch": "arm",
 	"Os": "linux",
